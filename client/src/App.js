@@ -3,6 +3,7 @@ import Home from '../src/pages/Home'
 import NotFound from './pages/NotFound'
 import Header from './components/Header'
 import { ApolloProvider, ApolloClient, InMemoryCache} from '@apollo/client'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 

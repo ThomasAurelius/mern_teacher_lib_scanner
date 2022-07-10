@@ -5,7 +5,7 @@ const BookSchema = new mongoose.Schema({
       type: String,
    },
    authors: {
-      type: Array,
+      type: String,
    },
    isbn: {
       type: String,
@@ -23,7 +23,7 @@ const BookSchema = new mongoose.Schema({
       type: String,
    },
    categories: {
-      type: Array,
+      type: String,
    },
    location: {
       type: String,

@@ -1,6 +1,7 @@
 import React from 'react'
 import AddBookModal from '../components/AddBookModal'
 import Books from '../components/Books'
+import '../App.css'
 
 export default function Home() {
   return (
