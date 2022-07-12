@@ -151,3 +151,20 @@ a {
 .btn-clear {
   margin-inline: 20px;
 }
+
+
+.bigRow {
+  border: 3px solid black;
+}
+
+.book-container {
+  border: 2px solid black;
+  display: grid;
+  grid-template-areas:
+  "one two three four"
+  "five five five five";
+}
+
+.book-grid1 {
+  max-width: 20vw;
+}

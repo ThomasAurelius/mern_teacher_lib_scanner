@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import BookRow from './BookRow'
+import BookRow2 from './BookRow2'
 import { GET_BOOKS } from '../queries/bookQueries'
 import Spinner from './Spinner.js'
 
@@ -32,7 +32,7 @@ export default function Books() {
             </thead>
             <tbody>
                {data.books.map(book => (
-                  <BookRow key={book.id} book={book} />
+                  <BookRow2 key={book.id} book={book} />
                ))}
             </tbody>
          </table>

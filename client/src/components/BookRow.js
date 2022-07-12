@@ -12,24 +12,38 @@ const [deleteBook] = useMutation(DELETE_BOOK, {
 });
 
   return (
-    <tr>
-      <td>{ book.title }</td>
-      <td>{ book.authors }</td>
-      <td>{ book.isbn }</td>
-      <td>{ book.copy }</td>
-      <td>{ book.price }</td>
-      <td className='table-img'><img src={ book.img } /></td>
-      <td>{ book.subject }</td>
-      <td>{ book.categories }</td>
-      <td>{ book.location }</td>
-      <td>{ book.borrowedBy }</td>
+    <>
+    <div className="bigRow">
+      <tr>
       
-      <td>
-         <button className="btn btn-danger btn-sm" onClick={deleteBook}>
-            <FaTrash />
-         </button>
-      </td>
-    </tr>
+        <td>{ book.authors }</td>
+      
+        <td>{ book.copy }</td>
+        
+        <td className='table-img'><img src={ book.img } /></td>
+        
+        <td>{ book.categories }</td>
+        
+        
+      
+        <td>
+           <button className="btn btn-danger btn-sm" onClick={deleteBook}>
+              <FaTrash />
+           </button>
+        </td>
+      </tr>
+      <tr>
+        <td>{ book.title }</td>
+        <td>{ book.subject }</td>
+        <td>{ book.location }</td>
+      </tr>
+      <tr>
+        <td>{ book.isbn }</td>
+        <td>{ book.price }</td>
+        <td>{ book.borrowedBy }</td>
+      </tr>
+    </div>
+    </>
   )
 }
 
