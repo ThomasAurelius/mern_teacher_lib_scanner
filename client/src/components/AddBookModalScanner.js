@@ -114,8 +114,8 @@ export default function AddBookModalScanner() {
               <div className="App-section-title"> Scan ISBN barcode </div>
               <br />
               <Html5QrcodePlugin 
-                fps={10}
-                qrbox={250}
+                fps={30}
+                qrbox={150}
                 disableFlip={false}
                 qrCodeSuccessCallback={onNewScanResult}/>          
               

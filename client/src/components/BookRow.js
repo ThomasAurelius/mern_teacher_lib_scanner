@@ -18,7 +18,7 @@ const [deleteBook] = useMutation(DELETE_BOOK, {
       <td>{ book.isbn }</td>
       <td>{ book.copy }</td>
       <td>{ book.price }</td>
-      <td>{ book.img }</td>
+      <td className='table-img'><img src={ book.img } /></td>
       <td>{ book.subject }</td>
       <td>{ book.categories }</td>
       <td>{ book.location }</td>

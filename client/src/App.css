@@ -125,3 +125,12 @@ tbody td:hover:before {
 a {
   color: white
 }
+
+.table-img {
+  max-width: 150px;
+  max-height: 250px;
+}
+
+.table-img img {
+  max-width: 150px;
+}
