@@ -134,3 +134,20 @@ a {
 .table-img img {
   max-width: 150px;
 }
+
+#isbn-field {
+  width: 80%;
+  display: inline;
+}
+
+#lookup {
+  margin-top: -5px;;
+}
+
+#isbn-label {
+  display: block;
+}
+
+.btn-clear {
+  margin-inline: 20px;
+}

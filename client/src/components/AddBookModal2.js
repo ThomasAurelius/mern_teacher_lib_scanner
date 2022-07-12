@@ -1,15 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FaUser } from 'react-icons/fa'
 import { useMutation } from '@apollo/client'
 import { Button, Modal } from 'react-bootstrap'
+import BeepAudio from '../beep.mp3'
 
 import { ADD_BOOK } from '../mutations/bookMutations'
 
 import { GET_BOOKS } from '../queries/bookQueries'
 
 export default function AddBookModal2() {
+  const [decodedResults, setDecodedResults] = useState("")
   const [show, setShow] = useState(false)
-  const [showScanner, setShowScanner] = useState(false)
+  
   const [title, setTitle] = useState('')
   const [authors, setAuthors] = useState('')
   const [isbn, setIsbn] = useState('')
@@ -36,6 +38,33 @@ export default function AddBookModal2() {
       })
     }
   })
+  
+  function searchIsbn(isbn)  {
+    if (!isbn) {
+      alert('Please enter an ISBN')
+    } else {
+    var AudioPlay = new Audio (BeepAudio);
+    setDecodedResults(isbn)   
+      
+ 
+    const API_URL = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'
+    const getBookData = async (isbn) => {
+    const url = `${API_URL}${isbn}`
+    const res = await fetch(url)
+    const data = await res.json()
+
+    setTitle((data.items[0].volumeInfo.title) ? data.items[0].volumeInfo.title : "")
+    setIsbn((data.items[0].volumeInfo.industryIdentifiers[1]?.identifier) ? data.items[0].volumeInfo.industryIdentifiers[1].identifier : "")
+    setAuthors((data.items[0].volumeInfo.authors[0]) ? data.items[0].volumeInfo.authors[0] : "")
+    setImg((data.items[0].volumeInfo.imageLinks?.smallThumbnail) ? data.items[0].volumeInfo.imageLinks.smallThumbnail : "")  
+   
+    AudioPlay.play(); 
+    console.log(data.items[0].volumeInfo.imageLinks?.smallThumbnail)
+  }
+
+  getBookData(isbn)     
+}
+}
 
   const onSubmit = (e) => {
     e.preventDefault();    
@@ -43,6 +72,10 @@ export default function AddBookModal2() {
       return alert('Please enter title and author')
     }
     addBook(title, authors, isbn, copy, price, img, subject, categories, location, borrowedBy);
+    clearFields();
+  }
+
+  function clearFields() {
     setTitle('');
     setAuthors('');
     setIsbn('');
@@ -74,7 +107,7 @@ export default function AddBookModal2() {
           <Modal.Title>
             <div className="modal-header">
               <h5 className="modal-title" id="addBookModalLabel">Add Book</h5>
-             
+              
             </div>
           </Modal.Title>
         </Modal.Header>
@@ -91,8 +124,13 @@ export default function AddBookModal2() {
                   <input type="text" className='form-control' id="authors" value={authors} onChange={ (e) => setAuthors(e.target.value) } />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">ISBN</label>
-                  <input type="text" className='form-control' id="isbn" value={isbn} onChange={ (e) => setIsbn(e.target.value) } />
+                  <label className="form-label" id='isbn-label'>ISBN</label>
+                  <div id='isbn-div'>
+                    <input type="text" className='form-control' id="isbn-field" value={isbn} onChange={ (e) => setIsbn(e.target.value) } />
+                    <Button id='lookup' variant="primary" className='btn btn-primary' onClick={() => searchIsbn(isbn)}>Lookup</Button>
+                  </div>
+
+
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Copy</label>
@@ -123,7 +161,10 @@ export default function AddBookModal2() {
                   <input type="text" className='form-control' id="borrowedBy" value={borrowedBy} onChange={ (e) => setBorrowedBy(e.target.value) } />
                 </div>
                 
-                <Button variant='secondary' className="btn btn-secondary" type='submit' onClick={handleClose}>Add Book</Button>
+                <div className="buttons">
+                  <Button variant='secondary' className="btn btn-secondary" type='submit' onClick={handleClose}>Add Book</Button>
+                  <Button variant="primary" className='btn btn-primary btn-clear' onClick={clearFields}>Clear</Button>
+                </div>
               </form>
             </div>
           </Modal.Body>

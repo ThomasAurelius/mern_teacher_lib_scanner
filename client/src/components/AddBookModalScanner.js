@@ -73,6 +73,10 @@ export default function AddBookModalScanner() {
     }
     console.log(title, authors, img)
     addBook(title, authors, isbn, copy, price, img, subject, categories, location, borrowedBy);
+    clearFields();
+  }
+
+   function clearFields() {
     setTitle('');
     setAuthors('');
     setIsbn('');
@@ -166,6 +170,7 @@ export default function AddBookModalScanner() {
                 </div>
                 
                 <Button variant='secondary' className="btn btn-secondary" type='submit' onClick={handleClose}>Add Book</Button>
+                <Button variant="primary" className='btn btn-primary btn-clear' onClick={clearFields}>Clear</Button>
               </form>
             </div>
           </Modal.Body>
