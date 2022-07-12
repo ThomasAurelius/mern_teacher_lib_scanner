@@ -1,15 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FaUser } from 'react-icons/fa'
 import { useMutation } from '@apollo/client'
 import { Button, Modal } from 'react-bootstrap'
+import Html5QrcodePlugin from './Html5QrcodePlugin'
+import BeepAudio from '../beep.mp3'
 
 import { ADD_BOOK } from '../mutations/bookMutations'
 
 import { GET_BOOKS } from '../queries/bookQueries'
 
-export default function AddBookModal2() {
+export default function AddBookModalScanner() {
+  const [decodedResults, setDecodedResults] = useState(9781408810552)
   const [show, setShow] = useState(false)
-  const [showScanner, setShowScanner] = useState(false)
   const [title, setTitle] = useState('')
   const [authors, setAuthors] = useState('')
   const [isbn, setIsbn] = useState('')
@@ -37,11 +39,39 @@ export default function AddBookModal2() {
     }
   })
 
-  const onSubmit = (e) => {
+   function onNewScanResult(decodedText, decodedResult)  {
+    var AudioPlay = new Audio (BeepAudio);
+    console.log(
+      "App [result]", decodedResult);
+    setDecodedResults(decodedText)    
+    AudioPlay.play(); 
+  }
+  
+
+  useEffect(() => {
+    const API_URL = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'
+    const getBookData = async (decodedResults) => {
+    const url = `${API_URL}${decodedResults}`
+    const res = await fetch(url)
+    const data = await res.json()
+
+    setTitle(data.items[0].volumeInfo.title)
+    setIsbn(data.items[0].volumeInfo.industryIdentifiers[1].identifier)
+    setAuthors(data.items[0].volumeInfo.authors[0])
+    setImg(data.items[0].volumeInfo.imageLinks.smallThumbnail)  
+   
+  }
+  getBookData(decodedResults)
+     
+    }, [decodedResults])  
+
+
+    const onSubmit = (e) => {
     e.preventDefault();    
     if (title === "" || authors === "" ) {
       return alert('Please enter title and author')
     }
+    console.log(title, authors, img)
     addBook(title, authors, isbn, copy, price, img, subject, categories, location, borrowedBy);
     setTitle('');
     setAuthors('');
@@ -61,11 +91,9 @@ export default function AddBookModal2() {
       <Button variant="primary" className='btn btn-primary' onClick={handleShow}>
         <div className="d-flex align-items-center">
           <FaUser className='icon'/>
-          <div>Add Book Manually</div>
+          <div>Add Book w/ Scanner</div>
         </div>
       </Button>
-
-      
 
       
 
@@ -81,13 +109,27 @@ export default function AddBookModal2() {
             
         <Modal.Body>
             <div className="modal-body">
+            <div className="scanner">
+              <section className="App-section">
+              <div className="App-section-title"> Scan ISBN barcode </div>
+              <br />
+              <Html5QrcodePlugin 
+                fps={10}
+                qrbox={250}
+                disableFlip={false}
+                qrCodeSuccessCallback={onNewScanResult}/>          
+              
+              
+          
+        </section>
+            </div>
               <form onSubmit={onSubmit}>
                 <div className="mb-3">
                   <label className="form-label">Title</label>
                   <input type="text" className='form-control' id="title" value={title} onChange={ (e) => setTitle(e.target.value) } />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Authors</label>
+                  <label className="form-label">Author</label>
                   <input type="text" className='form-control' id="authors" value={authors} onChange={ (e) => setAuthors(e.target.value) } />
                 </div>
                 <div className="mb-3">

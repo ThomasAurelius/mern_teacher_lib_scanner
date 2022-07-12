@@ -7,9 +7,8 @@ import { ADD_BOOK } from '../mutations/bookMutations'
 
 import { GET_BOOKS } from '../queries/bookQueries'
 
-export default function AddBookModal2() {
+export default function AddBookModalSpeechly() {
   const [show, setShow] = useState(false)
-  const [showScanner, setShowScanner] = useState(false)
   const [title, setTitle] = useState('')
   const [authors, setAuthors] = useState('')
   const [isbn, setIsbn] = useState('')
@@ -61,14 +60,11 @@ export default function AddBookModal2() {
       <Button variant="primary" className='btn btn-primary' onClick={handleShow}>
         <div className="d-flex align-items-center">
           <FaUser className='icon'/>
-          <div>Add Book Manually</div>
+          <div>Add Book w/ Speechly</div>
         </div>
       </Button>
 
       
-
-      
-
      <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
@@ -81,6 +77,9 @@ export default function AddBookModal2() {
             
         <Modal.Body>
             <div className="modal-body">
+            <div className="speechly">
+            
+            </div>
               <form onSubmit={onSubmit}>
                 <div className="mb-3">
                   <label className="form-label">Title</label>

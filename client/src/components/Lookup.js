@@ -22,6 +22,7 @@ import React from 'react'
     setBookTitle(data.items[0].volumeInfo.title)
     setBookAuthor(data.items[0].volumeInfo.authors)
     setBookThumbnail(data.items[0].volumeInfo.imageLinks.smallThumbnail)
+    
    
   }
   getBookData(results)
@@ -34,10 +35,7 @@ import React from 'react'
       <p>Book Author: {bookAuthor}</p>
       <p>Price</p>
       <img src={bookThumbnail} alt="" />
-      <p>Subjects</p>
-      <p>Categories (from personal list)</p>
-      <p>Location</p>
-      <p>Borrowed by</p>
+      
 
     </div>
 
