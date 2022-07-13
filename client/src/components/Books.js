@@ -14,28 +14,13 @@ export default function Books() {
   return (
     <>
       { !loading && !error && (
-         <table className='table table-hover mt-3'>
-            <thead>
-               <tr>
-                  <th>Title</th>
-                  <th>Authors</th>
-                  <th>ISBN</th>
-                  <th>Copy</th>
-                  <th>Price</th>
-                  <th>IMG</th>
-                  <th>Subject</th>
-                  <th>Categories</th>
-                  <th>Location</th>
-                  <th>BorrowedBy</th>
-                  <th></th>              
-               </tr>            
-            </thead>
-            <tbody>
+         <div className='table table-hover mt-3'>
+            <div>
                {data.books.map(book => (
                   <BookRow2 key={book.id} book={book} />
                ))}
-            </tbody>
-         </table>
+            </div>
+         </div>
       ) }
     </>
   );

@@ -1,10 +1,14 @@
+
 import { FaTrash } from 'react-icons/fa'
 import { useMutation } from '@apollo/client'
 import { DELETE_BOOK }  from '../mutations/bookMutations'
 import { GET_BOOKS } from '../queries/bookQueries';
+import UpdateBookModal from './UpdateBookModal';
 
 
 export default function BookRow2({ book }) {
+
+
 
 const [deleteBook] = useMutation(DELETE_BOOK, {
    variables: { id: book.id },
@@ -22,7 +26,7 @@ const [deleteBook] = useMutation(DELETE_BOOK, {
         <div>{ book.isbn }</div>
       </div>
       <div className="book-grid2">
-        <div><img src={ book.img } alt='book cover, if available' /></div>
+        <div><img src={ book.img } alt='book cover, img not available' /></div>
       </div>
       <div className="book-grid3">
         <div>{ book.copy }</div>
@@ -35,9 +39,12 @@ const [deleteBook] = useMutation(DELETE_BOOK, {
         <div>{ book.price }</div>
         <div>{ book.borrowedBy }</div>
       </div>
-      <button className="btn btn-danger btn-sm" onClick={deleteBook}>
-              <FaTrash />
-      </button>
+      <div className="book-grid5">
+        <button className="btn btn-danger btn-sm" onClick={deleteBook}>
+                <FaTrash />
+        </button>
+        <UpdateBookModal book={book} />
+      </div>
     </div>
      
     

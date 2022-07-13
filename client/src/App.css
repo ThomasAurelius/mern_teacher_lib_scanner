@@ -82,7 +82,8 @@
 }
 
 table {
-  width: 800px;
+  max-width: 800px;
+  width: 90vw;
   border-collapse: collapse;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -166,5 +167,23 @@ a {
 }
 
 .book-grid1 {
+  grid-area: one;
   max-width: 20vw;
+}
+
+.book-grid2 {
+  grid-area: two;
+}
+
+.book-grid3 {
+  grid-area: three;
+}
+
+.book-grid4 {
+  grid-area: four;
+}
+
+.book-grid5 {
+  grid-area: five;
+  background-color: #000;
 }

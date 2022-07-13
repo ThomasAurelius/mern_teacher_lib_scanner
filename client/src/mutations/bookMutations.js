@@ -80,4 +80,4 @@ const UPDATE_BOOK = gql`
   }
 `;
 
-export {ADD_BOOK, DELETE_BOOK}
+export {ADD_BOOK, DELETE_BOOK, UPDATE_BOOK};
