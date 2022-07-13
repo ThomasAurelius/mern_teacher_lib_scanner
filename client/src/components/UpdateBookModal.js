@@ -9,6 +9,7 @@ import { GET_BOOKS } from '../queries/bookQueries'
 export default function UpdateBookModal(book) {
  
   const [show, setShow] = useState(false)
+  const [id, setId] = useState('')
   const [title, setTitle] = useState('')
   const [authors, setAuthors] = useState('')
   const [isbn, setIsbn] = useState('')
@@ -23,39 +24,51 @@ export default function UpdateBookModal(book) {
   const handleClose = () => setShow(false);
 
   const handleShow = () => { 
-    //not working.... fields stay blank.
-    setTitle(book.title)
-    setAuthors(book.authors)
-    setIsbn(book.isbn)
-    setCopy(book.copy)
-    setPrice(book.price)    
-    setImg(book.img)
-    setSubject(book.subject)
-    setCategories(book.categories)
-    setLocation(book.location)
-    setBorrowedBy(book.borrowedBy)
-    console.log(book)
-    
+    setId((book.book.id) ? book.book.id : "")
+    setTitle((book.book.title) ? book.book.title : "")
+    setAuthors((book.book.authors) ? book.book.authors : "")
+    setIsbn((book.book.isbn) ? book.book.isbn : "")
+    setCopy((book.book.copy) ? book.book.copy : "")
+    setPrice((book.book.price)  ? book.book.price : "")  
+    setImg((book.book.img) ? book.book.img : "")
+    setSubject((book.book.subject) ? book.book.subject : "")
+    setCategories((book.book.categories) ? book.book.categories : "")
+    setLocation((book.book.location) ? book.book.location : "")
+    setBorrowedBy((book.book.borrowedBy) ? book.book.borrowedBy : "")
+     
     setShow(true);
   }
   
 
+
+
+
+
+
   const [updateBook] = useMutation(UPDATE_BOOK, {
     //not working... 400 error
-    variables: { id: book.id, title, authors, isbn, copy, price, img, subject, categories, location, borrowedBy },
-    refetchQueries: [{ query: GET_BOOKS, variables: { id: book.id } }]
+    variables: { id, title, authors, isbn, copy, price, img, subject, categories, location, borrowedBy },
+    refetchQueries: [{ query: GET_BOOKS }],
   })
+
+
+
+
+
+
+  
 
   const onSubmit = (e) => {
     e.preventDefault();    
     if (title === "" || authors === "" ) {
       return alert('Please enter title and author')
     }
-    updateBook(title, authors, isbn, copy, price, img, subject, categories, location, borrowedBy);
+    updateBook(id, title, authors, isbn, copy, price, img, subject, categories, location, borrowedBy);
     clearFields();
   }
 
   function clearFields() {
+    setId('');
     setTitle('');
     setAuthors('');
     setIsbn('');
@@ -93,6 +106,10 @@ export default function UpdateBookModal(book) {
         <Modal.Body>
             <div className="modal-body">
               <form onSubmit={onSubmit}>
+              <div className="mb-3">
+                  <label className="form-label">ID</label>
+                  <input type="text" className='form-control' id="id" value={id} disabled />
+                </div>
                 <div className="mb-3">
                   <label className="form-label">Title</label>
                   <input type="text" className='form-control' id="title" value={title} onChange={ (e) => setTitle(e.target.value) } />
