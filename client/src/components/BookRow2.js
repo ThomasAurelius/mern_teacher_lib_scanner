@@ -1,5 +1,5 @@
 
-import { FaTrash } from 'react-icons/fa'
+import { FaTrash, FaRegEdit } from 'react-icons/fa'
 import { useMutation } from '@apollo/client'
 import { DELETE_BOOK }  from '../mutations/bookMutations'
 import { GET_BOOKS } from '../queries/bookQueries';
