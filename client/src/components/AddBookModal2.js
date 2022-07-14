@@ -4,12 +4,13 @@ import { useMutation } from '@apollo/client'
 import { Button, Modal } from 'react-bootstrap'
 import BeepAudio from '../beep.mp3'
 
+
 import { ADD_BOOK } from '../mutations/bookMutations'
 
 import { GET_BOOKS } from '../queries/bookQueries'
 
 export default function AddBookModal2() {
-  const [decodedResults, setDecodedResults] = useState("")
+ 
   const [show, setShow] = useState(false)
   
   const [title, setTitle] = useState('')
@@ -44,7 +45,7 @@ export default function AddBookModal2() {
       alert('Please enter an ISBN')
     } else {
     var AudioPlay = new Audio (BeepAudio);
-    setDecodedResults(isbn)   
+    
       
  
     const API_URL = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'
@@ -109,6 +110,7 @@ export default function AddBookModal2() {
               <h5 className="modal-title" id="addBookModalLabel">Add Book</h5>
               
             </div>
+            
           </Modal.Title>
         </Modal.Header>
             
@@ -125,10 +127,10 @@ export default function AddBookModal2() {
                 </div>
                 <div className="mb-3">
                   <label className="form-label" id='isbn-label'>ISBN</label>
-                  <div id='isbn-div'>
-                    <input type="text" className='form-control' id="isbn-field" value={isbn} onChange={ (e) => setIsbn(e.target.value) } />
-                    <Button id='lookup' variant="primary" className='btn btn-primary' onClick={() => searchIsbn(isbn)}>Lookup</Button>
-                  </div>
+                <div id='isbn-div'>
+                  <input type="text" className='form-control' id="isbn-field" value={isbn} onChange={ (e) => setIsbn(e.target.value) } />
+                  <Button id='lookup' variant="primary" className='btn btn-primary' onClick={() => searchIsbn(isbn)}>Lookup</Button>
+                </div>
 
 
                 </div>

@@ -1,7 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FaUser } from 'react-icons/fa'
 import { useMutation } from '@apollo/client'
 import { Button, Modal } from 'react-bootstrap'
+import BeepAudio from '../beep.mp3'
+
+
+import {
+  SpeechProvider, useSpeechContext
+} from "@speechly/react-client";
+
+import {
+  PushToTalkButton,
+  PushToTalkButtonContainer,
+  BigTranscript,
+  BigTranscriptContainer,
+  IntroPopup
+} from "@speechly/react-ui";
 
 import { ADD_BOOK } from '../mutations/bookMutations'
 
@@ -36,6 +50,33 @@ export default function AddBookModalSpeechly() {
     }
   })
 
+  function searchIsbn(isbn)  {
+    if (!isbn) {
+      alert('Please enter an ISBN')
+    } else {
+    var AudioPlay = new Audio (BeepAudio);
+    
+      
+ 
+    const API_URL = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'
+    const getBookData = async (isbn) => {
+    const url = `${API_URL}${isbn}`
+    const res = await fetch(url)
+    const data = await res.json()
+
+    setTitle((data.items[0].volumeInfo.title) ? data.items[0].volumeInfo.title : "")
+    setIsbn((data.items[0].volumeInfo.industryIdentifiers[1]?.identifier) ? data.items[0].volumeInfo.industryIdentifiers[1].identifier : "")
+    setAuthors((data.items[0].volumeInfo.authors[0]) ? data.items[0].volumeInfo.authors[0] : "")
+    setImg((data.items[0].volumeInfo.imageLinks?.smallThumbnail) ? data.items[0].volumeInfo.imageLinks.smallThumbnail : "")  
+   
+    AudioPlay.play(); 
+    console.log(data.items[0].volumeInfo.imageLinks?.smallThumbnail)
+  }
+
+  getBookData(isbn)     
+}
+}
+
   const onSubmit = (e) => {
     e.preventDefault();    
     if (title === "" || authors === "" ) {
@@ -58,6 +99,47 @@ export default function AddBookModalSpeechly() {
     setBorrowedBy('');
   }
 
+
+
+  function SpeechlyApp() {
+    const { segment } = useSpeechContext();
+    let newSegment = []
+    // This effect is fired whenever there's a new speech segment available
+    useEffect(() => {
+      
+        if (segment?.isFinal) {
+          //translate the speech strings to text numbers
+          segment.words.forEach(word => {
+            if (word.value === 'ONE') {
+              newSegment.push(1)
+            } else if (word.value === 'TWO') {
+              newSegment.push(2)
+            } else if (word.value === 'THREE') {
+              newSegment.push(3)
+            } else if (word.value === 'FOUR') {
+              newSegment.push(4)
+            } else if (word.value === 'FIVE') {
+              newSegment.push(5)
+            } else if (word.value === 'SIX') {
+              newSegment.push(6)
+            } else if (word.value === 'SEVEN') {
+              newSegment.push(7)
+            } else if (word.value === 'EIGHT') {
+              newSegment.push(8)
+            } else if (word.value === 'NINE') {
+              newSegment.push(9)
+            } else if (word.value === 'ZERO') {
+              newSegment.push(0)
+          } 
+        })
+          // Store the final app state as basis of next utterance
+          setIsbn(newSegment.join(''));
+        }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [segment]);
+  return null
+  }
+
   return (
     <>
 
@@ -66,6 +148,7 @@ export default function AddBookModalSpeechly() {
           <FaUser className='icon'/>
           <div>Add Book w/ Speechly</div>
         </div>
+        
       </Button>
 
       
@@ -93,10 +176,23 @@ export default function AddBookModalSpeechly() {
                   <label className="form-label">Authors</label>
                   <input type="text" className='form-control' id="authors" value={authors} onChange={ (e) => setAuthors(e.target.value) } />
                 </div>
+                
                 <div className="mb-3">
                   <label className="form-label">ISBN</label>
-                  <input type="text" className='form-control' id="isbn" value={isbn} onChange={ (e) => setIsbn(e.target.value) } />
+                  <div id='isbn-div'>
+                    <SpeechProvider appId="917295fc-b9d0-4e23-9abb-9fc89a81582e">
+                      <BigTranscript placement="top" />
+                      <PushToTalkButton placement="top" captureKey=" " powerOn="auto" />
+                      <IntroPopup />
+                      <SpeechlyApp />
+
+                      <input type="text" className='form-control' id="isbn-field" value={isbn} onChange={ (e) => setIsbn(e.target.value) } />
+                      <Button id='lookup' variant="primary" className='btn btn-primary' onClick={() => searchIsbn(isbn)}>Lookup</Button>
+                    
+                  </SpeechProvider>
+                    </div>
                 </div>
+                
                 <div className="mb-3">
                   <label className="form-label">Copy</label>
                   <input type="text" className='form-control' id="copy" value={copy} onChange={ (e) => setCopy(e.target.value) } />
@@ -135,3 +231,4 @@ export default function AddBookModalSpeechly() {
     </>
   )
 }
+

@@ -136,8 +136,18 @@ a {
   max-width: 150px;
 }
 
+#isbn-div {
+  display: flex;
+  
+}
+
+#isbn-div input {
+  text-align: center;
+  font-size: 2rem;
+}
+
 #isbn-field {
-  width: 80%;
+  width: 60%;
   display: inline;
 }
 
@@ -173,6 +183,7 @@ a {
 
 .book-grid2 {
   grid-area: two;
+  max-width: 20vw;
 }
 
 .book-grid3 {

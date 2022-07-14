@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FaUser } from 'react-icons/fa'
+import { FaRegEdit } from 'react-icons/fa'
 import { useMutation } from '@apollo/client'
 import { Button, Modal } from 'react-bootstrap'
 import { UPDATE_BOOK } from '../mutations/bookMutations'
@@ -35,28 +35,13 @@ export default function UpdateBookModal(book) {
     setCategories((book.book.categories) ? book.book.categories : "")
     setLocation((book.book.location) ? book.book.location : "")
     setBorrowedBy((book.book.borrowedBy) ? book.book.borrowedBy : "")
-     
     setShow(true);
   }
   
-
-
-
-
-
-
   const [updateBook] = useMutation(UPDATE_BOOK, {
-    //not working... 400 error
     variables: { id, title, authors, isbn, copy, price, img, subject, categories, location, borrowedBy },
-    refetchQueries: [{ query: GET_BOOKS }],
+    refetchQueries: [{ query: GET_BOOKS }]
   })
-
-
-
-
-
-
-  
 
   const onSubmit = (e) => {
     e.preventDefault();    
@@ -86,8 +71,8 @@ export default function UpdateBookModal(book) {
 
       <Button variant="primary" className='btn btn-primary' onClick={handleShow}>
         <div className="d-flex align-items-center">
-          <FaUser className='icon'/>
-          <div>Update Book</div>
+          <FaRegEdit className='icon'/>
+       
         </div>
       </Button>
 

@@ -45,6 +45,7 @@ export default function AddBookModalScanner() {
       "App [result]", decodedResult);
     setDecodedResults(decodedText)    
     AudioPlay.play(); 
+    
   }
   
 
@@ -54,11 +55,11 @@ export default function AddBookModalScanner() {
     const url = `${API_URL}${decodedResults}`
     const res = await fetch(url)
     const data = await res.json()
-
-    setTitle(data.items[0].volumeInfo.title)
-    setIsbn(data.items[0].volumeInfo.industryIdentifiers[1].identifier)
-    setAuthors(data.items[0].volumeInfo.authors[0])
-    setImg(data.items[0].volumeInfo.imageLinks.smallThumbnail)  
+    console.log(data)
+    setTitle(data.items[0]?.volumeInfo.title)
+    setIsbn(data.items[0]?.volumeInfo.industryIdentifiers[1].identifier)
+    setAuthors(data.items[0]?.volumeInfo.authors[0])
+    setImg(data.items[0]?.volumeInfo.imageLinks.smallThumbnail)  
    
   }
   getBookData(decodedResults)

@@ -100,8 +100,41 @@ const mutation = new GraphQLObjectType({
         return Book.findByIdAndRemove(args.id);
       },
     },
+     // Update a book
+    updateBook: {
+      type: BookType,
+      args: {
+        id: { type: GraphQLNonNull(GraphQLString) },
+        title: { type: GraphQLNonNull(GraphQLString) },
+        authors: { type: GraphQLNonNull(GraphQLString) },
+        isbn: { type: GraphQLString },
+        copy: { type: GraphQLString },
+        price: { type: GraphQLString },
+        img: { type: GraphQLString },
+        subject: { type: GraphQLString },
+        categories: { type: GraphQLString },
+        location: { type: GraphQLString },
+        borrowedBy: { type: GraphQLString },
+      },
+      resolve(parent, args) {
+          return Book.findByIdAndUpdate(args.id, {
+          title: args.title,
+          authors: args.authors,
+          isbn: args.isbn,
+          copy: args.copy,
+          price: args.price,
+          img: args.img,
+          subject: args.subject,
+          categories: args.categories,
+          location: args.location,
+          borrowedBy: args.borrowedBy,
+        });
+      },
+      },
+    },
+
    
-  }
+  
 });
 module.exports = new GraphQLSchema({
   query: RootQuery,
