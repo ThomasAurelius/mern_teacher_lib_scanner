@@ -9,7 +9,7 @@ export default function Books() {
    const { loading, error, data } = useQuery(GET_BOOKS)
 
    if (loading) return <Spinner />
-   if (error) return <p>Something went wrong</p>
+   if (error) return <p>Something went wrong - error: {error}</p>
 
   return (
     <>
