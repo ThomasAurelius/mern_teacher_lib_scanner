@@ -198,3 +198,14 @@ a {
   grid-area: five;
   background-color: #000;
 }
+
+.book-container p {
+  margin-bottom: -3px;
+}
+
+.book-container small {
+  border-top: .5px solid black;
+  color: darkgrey;
+  font-size: .75rem;
+}
+

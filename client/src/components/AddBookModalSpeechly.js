@@ -11,9 +11,7 @@ import {
 
 import {
   PushToTalkButton,
-  PushToTalkButtonContainer,
   BigTranscript,
-  BigTranscriptContainer,
   IntroPopup
 } from "@speechly/react-ui";
 
