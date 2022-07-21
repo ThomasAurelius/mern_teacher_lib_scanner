@@ -128,17 +128,16 @@ a {
 }
 
 .table-img {
-  max-width: 150px;
-  max-height: 250px;
+  width: 100px;
+  height: 150px;
 }
 
 .table-img img {
-  max-width: 150px;
+  width: 100px;
 }
 
 #isbn-div {
   display: flex;
-  
 }
 
 #isbn-div input {
@@ -174,6 +173,8 @@ a {
   grid-template-areas:
   "one two three four"
   "five five five five";
+  border-radius: 15px;
+  background-color: beige;
 }
 
 .book-grid1 {
@@ -195,9 +196,9 @@ a {
 }
 
 .book-grid5 {
-  grid-area: five;
-  background-color: #000;
+  grid-area: five;  
 }
+
 
 .book-container p {
   margin-bottom: -3px;
@@ -209,3 +210,6 @@ a {
   font-size: .75rem;
 }
 
+#lookup {
+  border-radius: 50%;
+}
