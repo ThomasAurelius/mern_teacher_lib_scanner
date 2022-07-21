@@ -25,36 +25,36 @@ const [deleteBook] = useMutation(DELETE_BOOK, {
         <small className='book-author'>Author</small>
         <p>{ book.title }</p>
         <small className='book-title'>Title</small>
-        <p>{ book.isbn }</p>
-        <small className='book-isbn'>ISBN</small>
+        <div className="book-grid5">
+          <button className="btn btn-danger btn-sm" onClick={deleteBook}>
+                  <FaTrash />
+          </button>
+          <UpdateBookModal book={book} />
+        </div>
       </div>
       <div className="book-grid2">
-        <div><img src={ book.img } alt='book cover, img not available' /></div>
+        <div><img src={ (book.img) ? book.img : "-" } alt='book cover' /></div>
         <small className='book-img'>Book Cover</small>
       </div>
       <div className="book-grid3">
-        <p>{ book.copy }</p>
+        <p>{ (book.copy) ? book.copy : "-" }</p>
         <small className='book-copy'>Copy</small>
-        <p>{ book.subject }</p>
+        <p>{ (book.subject) ? book.subject : "-" }</p>
         <small className='book-subject'>Subject</small>
-        <p>{ book.categories }</p>
+        <p>{ (book.categories) ? book.categories : "-" }</p>
         <small className='book-categories'>Categories</small>
         
       </div>
       <div className="book-grid4">
-        <p>{ book.location }</p>
+        <p>{ (book.location) ? book.location : "-" }</p>
         <small className='book-location'>Location</small>
-        <p>{ book.price }</p>
+        <p>{ (book.price) ? book.price : "-" }</p>
         <small className='book-price'>Price</small>
-        <p>{ book.borrowedBy }</p>
+        <p>{ (book.borrowedBy) ? book.borrowedBy : "-" }</p>
         <small className='book-borrowedBy'>Borrowed By</small>
+        
       </div>
-      <div className="book-grid5">
-        <button className="btn btn-danger btn-sm" onClick={deleteBook}>
-                <FaTrash />
-        </button>
-        <UpdateBookModal book={book} />
-      </div>
+      
     </div>
      
     
