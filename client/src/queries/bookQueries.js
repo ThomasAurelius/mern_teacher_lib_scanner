@@ -2,6 +2,7 @@ import { gql } from '@apollo/client'
 
 const GET_BOOKS = gql`
    query getBooks {
+      
       books {
          id
          title
@@ -16,6 +17,7 @@ const GET_BOOKS = gql`
          borrowedBy
       }
    }
+
 `;
 
 export { GET_BOOKS }
