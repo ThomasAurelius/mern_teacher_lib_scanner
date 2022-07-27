@@ -11,7 +11,7 @@ export default function Books() {
 
    let sortData = data
    console.log(sortData)
-   const sortByAuthor = (data) => {
+   const sortByAuthor = (sortData) => {
     
      sortData.books.sort((a,b) => a.authors - b.authors); 
       

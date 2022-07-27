@@ -21,10 +21,10 @@ const [deleteBook] = useMutation(DELETE_BOOK, {
     <>
     <div className="book-container grid">
       <div className="book-grid1">
-        <p >{ book.authors }</p>
-        <small className='book-author'>Author</small>
-        <p>{ book.title }</p>
-        <small className='book-title'>Title</small>
+        <p  className='book-author'>{ book.authors }</p>
+        <small>Author</small>
+        <p className='book-title'>{ book.title }</p>
+        <small>Title</small>
         <div className="book-grid5">
           <button className="btn btn-danger btn-sm" onClick={deleteBook}>
                   <FaTrash />
@@ -32,10 +32,13 @@ const [deleteBook] = useMutation(DELETE_BOOK, {
           <UpdateBookModal book={book} />
         </div>
       </div>
+  {/*
       <div className="book-grid2">
         <div><img src={ (book.img) ? book.img : "-" } alt='book cover' /></div>
         <small className='book-img'>Book Cover</small>
       </div>
+  */}
+      
       <div className="book-grid3">
         <p>{ (book.copy) ? book.copy : "-" }</p>
         <small className='book-copy'>Copy</small>
