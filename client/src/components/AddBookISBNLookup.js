@@ -1,16 +1,25 @@
 import { useState, useEffect } from 'react'
-import { BiBarcodeReader } from 'react-icons/bi'
+import { BsBookHalf } from 'react-icons/bs'
 import { useMutation } from '@apollo/client'
 import { Button, Modal } from 'react-bootstrap'
-import Html5QrcodePlugin from './Html5QrcodePlugin'
 import BeepAudio from '../beep.mp3'
+
+
+import {
+  SpeechProvider, useSpeechContext
+} from "@speechly/react-client";
+
+import {
+  PushToTalkButton,
+  BigTranscript,
+  IntroPopup
+} from "@speechly/react-ui";
 
 import { ADD_BOOK } from '../mutations/bookMutations'
 
 import { GET_BOOKS } from '../queries/bookQueries'
 
-export default function AddBookModalScanner() {
-  const [decodedResults, setDecodedResults] = useState(9781408810552)
+export default function ISBNLookup() {
   const [show, setShow] = useState(false)
   const [title, setTitle] = useState('')
   const [authors, setAuthors] = useState('')
@@ -39,40 +48,38 @@ export default function AddBookModalScanner() {
     }
   })
 
-   function onNewScanResult(decodedText, decodedResult)  {
+  function searchIsbn(isbn)  {
+    if (!isbn) {
+      alert('Please enter an ISBN')
+    } else {
     var AudioPlay = new Audio (BeepAudio);
-    console.log(
-      "App [result]", decodedResult);
-    setDecodedResults(decodedText)    
-    AudioPlay.play(); 
     
-  }
-  
-
-  useEffect(() => {
+      
+ 
     const API_URL = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'
-    const getBookData = async (decodedResults) => {
-    const url = `${API_URL}${decodedResults}`
+    const getBookData = async (isbn) => {
+    const url = `${API_URL}${isbn}`
     const res = await fetch(url)
     const data = await res.json()
-    console.log(data)
-    setTitle(data.items[0]?.volumeInfo.title)
-    setIsbn(data.items[0]?.volumeInfo.industryIdentifiers[1].identifier)
-    setAuthors(data.items[0]?.volumeInfo.authors[0])
-    setImg(data.items[0]?.volumeInfo.imageLinks.smallThumbnail)  
+
+    setTitle((data.items[0].volumeInfo.title) ? data.items[0].volumeInfo.title : "")
+    setIsbn((data.items[0].volumeInfo.industryIdentifiers[1]?.identifier) ? data.items[0].volumeInfo.industryIdentifiers[1].identifier : "")
+    setAuthors((data.items[0].volumeInfo.authors[0]) ? data.items[0].volumeInfo.authors[0] : "")
+    setImg((data.items[0].volumeInfo.imageLinks?.smallThumbnail) ? data.items[0].volumeInfo.imageLinks.smallThumbnail : "")  
    
+    AudioPlay.play(); 
+    console.log(data.items[0].volumeInfo.imageLinks?.smallThumbnail)
   }
-  getBookData(decodedResults)
-     
-    }, [decodedResults])  
 
+  getBookData(isbn)     
+}
+}
 
-    const onSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();    
     if (title === "" || authors === "" ) {
       return alert('Please enter title and author')
     }
-    console.log(title, authors, img)
     addBook(title, authors, isbn, copy, price, img, subject, categories, location, borrowedBy);
     clearFields();
   }
@@ -90,23 +97,64 @@ export default function AddBookModalScanner() {
     setBorrowedBy('');
   }
 
+
+
+  function SpeechlyApp() {
+    const { segment } = useSpeechContext();
+    let newSegment = []
+    // This effect is fired whenever there's a new speech segment available
+    useEffect(() => {
+      
+        if (segment?.isFinal) {
+          //translate the speech strings to text numbers
+          segment.words.forEach(word => {
+            if (word.value === 'ONE') {
+              newSegment.push(1)
+            } else if (word.value === 'TWO') {
+              newSegment.push(2)
+            } else if (word.value === 'THREE') {
+              newSegment.push(3)
+            } else if (word.value === 'FOUR') {
+              newSegment.push(4)
+            } else if (word.value === 'FIVE') {
+              newSegment.push(5)
+            } else if (word.value === 'SIX') {
+              newSegment.push(6)
+            } else if (word.value === 'SEVEN') {
+              newSegment.push(7)
+            } else if (word.value === 'EIGHT') {
+              newSegment.push(8)
+            } else if (word.value === 'NINE') {
+              newSegment.push(9)
+            } else if (word.value === 'ZERO') {
+              newSegment.push(0)
+          } 
+        })
+          // Store the final app state as basis of next utterance
+          setIsbn(newSegment.join(''));
+        }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [segment]);
+  return null
+  }
+
   return (
     <>
 
       <Button variant="primary" className='btn btn-primary' onClick={handleShow}>
         <div className="d-flex align-items-center">
-          <BiBarcodeReader className='icon'/>
-          <div>Add Book w/ Scanner</div>
+          <BsBookHalf className='icon'/>
+          <div>ISBN Lookup</div>
         </div>
+        
       </Button>
 
       
-
      <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="modal-header">
-              <h5 className="modal-title" id="addBookModalLabel">Add Book</h5>
+              <h5 className="modal-title" id="addBookModalLabel">ISBN Lookup</h5>
              
             </div>
           </Modal.Title>
@@ -114,19 +162,8 @@ export default function AddBookModalScanner() {
             
         <Modal.Body>
             <div className="modal-body">
-            <div className="scanner">
-              <section className="App-section">
-              <div className="App-section-title"> Scan ISBN barcode </div>
-              <br />
-              <Html5QrcodePlugin 
-                fps={30}
-                qrbox={150}
-                disableFlip={false}
-                qrCodeSuccessCallback={onNewScanResult}/>          
-              
-              
-          
-        </section>
+            <div className="speechly">
+            
             </div>
               <form onSubmit={onSubmit}>
                 <div className="mb-3">
@@ -137,10 +174,23 @@ export default function AddBookModalScanner() {
                   <label className="form-label">Author</label>
                   <input type="text" className='form-control' id="authors" value={authors} onChange={ (e) => setAuthors(e.target.value) } />
                 </div>
+                
                 <div className="mb-3">
                   <label className="form-label">ISBN</label>
-                  <input type="text" className='form-control' id="isbn" value={isbn} onChange={ (e) => setIsbn(e.target.value) } />
+                  <div id='isbn-div'>
+                    <SpeechProvider appId="917295fc-b9d0-4e23-9abb-9fc89a81582e">
+                      <BigTranscript placement="top" />
+                      <PushToTalkButton placement="top" captureKey=" " powerOn="auto" />
+                      <IntroPopup />
+                      <SpeechlyApp />
+
+                      <input type="text" className='form-control' id="isbn-field" value={isbn} onChange={ (e) => setIsbn(e.target.value) } />
+                      <Button id='lookup' variant="primary" className='btn btn-primary' onClick={() => searchIsbn(isbn)}>Lookup</Button>
+                    
+                    </SpeechProvider>
+                  </div>
                 </div>
+                
                 <div className="mb-3">
                   <label className="form-label">Copy</label>
                   <input type="text" className='form-control' id="copy" value={copy} onChange={ (e) => setCopy(e.target.value) } />
@@ -179,3 +229,4 @@ export default function AddBookModalScanner() {
     </>
   )
 }
+

@@ -1,17 +1,18 @@
-import { useState, useEffect } from 'react'
-import { BiBarcodeReader } from 'react-icons/bi'
+import { useState } from 'react'
+import { FaUser } from 'react-icons/fa'
 import { useMutation } from '@apollo/client'
 import { Button, Modal } from 'react-bootstrap'
-import Html5QrcodePlugin from './Html5QrcodePlugin'
 import BeepAudio from '../beep.mp3'
+
 
 import { ADD_BOOK } from '../mutations/bookMutations'
 
 import { GET_BOOKS } from '../queries/bookQueries'
 
-export default function AddBookModalScanner() {
-  const [decodedResults, setDecodedResults] = useState(9781408810552)
+export default function AddBookModal2() {
+ 
   const [show, setShow] = useState(false)
+  
   const [title, setTitle] = useState('')
   const [authors, setAuthors] = useState('')
   const [isbn, setIsbn] = useState('')
@@ -38,46 +39,44 @@ export default function AddBookModalScanner() {
       })
     }
   })
-
-   function onNewScanResult(decodedText, decodedResult)  {
-    var AudioPlay = new Audio (BeepAudio);
-    console.log(
-      "App [result]", decodedResult);
-    setDecodedResults(decodedText)    
-    AudioPlay.play(); 
-    
-  }
   
-
-  useEffect(() => {
+  function searchIsbn(isbn)  {
+    if (!isbn) {
+      alert('Please enter an ISBN')
+    } else {
+    var AudioPlay = new Audio (BeepAudio);
+    
+      
+ 
     const API_URL = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'
-    const getBookData = async (decodedResults) => {
-    const url = `${API_URL}${decodedResults}`
+    const getBookData = async (isbn) => {
+    const url = `${API_URL}${isbn}`
     const res = await fetch(url)
     const data = await res.json()
-    console.log(data)
-    setTitle(data.items[0]?.volumeInfo.title)
-    setIsbn(data.items[0]?.volumeInfo.industryIdentifiers[1].identifier)
-    setAuthors(data.items[0]?.volumeInfo.authors[0])
-    setImg(data.items[0]?.volumeInfo.imageLinks.smallThumbnail)  
+
+    setTitle((data.items[0].volumeInfo.title) ? data.items[0].volumeInfo.title : "")
+    setIsbn((data.items[0].volumeInfo.industryIdentifiers[1]?.identifier) ? data.items[0].volumeInfo.industryIdentifiers[1].identifier : "")
+    setAuthors((data.items[0].volumeInfo.authors[0]) ? data.items[0].volumeInfo.authors[0] : "")
+    setImg((data.items[0].volumeInfo.imageLinks?.smallThumbnail) ? data.items[0].volumeInfo.imageLinks.smallThumbnail : "")  
    
+    AudioPlay.play(); 
+    console.log(data.items[0].volumeInfo.imageLinks?.smallThumbnail)
   }
-  getBookData(decodedResults)
-     
-    }, [decodedResults])  
 
+  getBookData(isbn)     
+}
+}
 
-    const onSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();    
     if (title === "" || authors === "" ) {
       return alert('Please enter title and author')
     }
-    console.log(title, authors, img)
     addBook(title, authors, isbn, copy, price, img, subject, categories, location, borrowedBy);
     clearFields();
   }
 
-   function clearFields() {
+  function clearFields() {
     setTitle('');
     setAuthors('');
     setIsbn('');
@@ -95,10 +94,12 @@ export default function AddBookModalScanner() {
 
       <Button variant="primary" className='btn btn-primary' onClick={handleShow}>
         <div className="d-flex align-items-center">
-          <BiBarcodeReader className='icon'/>
-          <div>Add Book w/ Scanner</div>
+          <FaUser className='icon'/>
+          <div>Add Book Manually</div>
         </div>
       </Button>
+
+      
 
       
 
@@ -107,27 +108,14 @@ export default function AddBookModalScanner() {
           <Modal.Title>
             <div className="modal-header">
               <h5 className="modal-title" id="addBookModalLabel">Add Book</h5>
-             
+              
             </div>
+            
           </Modal.Title>
         </Modal.Header>
             
         <Modal.Body>
             <div className="modal-body">
-            <div className="scanner">
-              <section className="App-section">
-              <div className="App-section-title"> Scan ISBN barcode </div>
-              <br />
-              <Html5QrcodePlugin 
-                fps={30}
-                qrbox={150}
-                disableFlip={false}
-                qrCodeSuccessCallback={onNewScanResult}/>          
-              
-              
-          
-        </section>
-            </div>
               <form onSubmit={onSubmit}>
                 <div className="mb-3">
                   <label className="form-label">Title</label>
@@ -138,8 +126,13 @@ export default function AddBookModalScanner() {
                   <input type="text" className='form-control' id="authors" value={authors} onChange={ (e) => setAuthors(e.target.value) } />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">ISBN</label>
-                  <input type="text" className='form-control' id="isbn" value={isbn} onChange={ (e) => setIsbn(e.target.value) } />
+                  <label className="form-label" id='isbn-label'>ISBN</label>
+                <div id='isbn-div'>
+                  <input type="text" className='form-control' id="isbn-field" value={isbn} onChange={ (e) => setIsbn(e.target.value) } />
+                  <Button id='lookup' variant="primary" className='btn btn-primary' onClick={() => searchIsbn(isbn)}>Lookup</Button>
+                </div>
+
+
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Copy</label>
@@ -170,8 +163,10 @@ export default function AddBookModalScanner() {
                   <input type="text" className='form-control' id="borrowedBy" value={borrowedBy} onChange={ (e) => setBorrowedBy(e.target.value) } />
                 </div>
                 
-                <Button variant='secondary' className="btn btn-secondary" type='submit' onClick={handleClose}>Add Book</Button>
-                <Button variant="primary" className='btn btn-primary btn-clear' onClick={clearFields}>Clear</Button>
+                <div className="buttons">
+                  <Button variant='secondary' className="btn btn-secondary" type='submit' onClick={handleClose}>Add Book</Button>
+                  <Button variant="primary" className='btn btn-primary btn-clear' onClick={clearFields}>Clear</Button>
+                </div>
               </form>
             </div>
           </Modal.Body>

@@ -3,6 +3,8 @@
   color: white;
 }
 
+/* Scanner */
+
 #html5qr-code-full-region {
   background-color: white;
   color: #282c34;
@@ -43,20 +45,23 @@
   margin-bottom: 20px;
 }
 
+/* Book results */
+
 table {
-  max-width: 800px;
+  max-width: 666px;
   width: 90vw;
   border-collapse: collapse;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 20px rgba(247, 246, 246, 0.9);  
 }
 
 th,
 td {
   padding: 15px;
   background-color: rgba(255, 255, 255, 0.2);
-  color: #000;
+  color: rgb(204, 202, 202);
 }
+
 
 th {
   text-align: left;
@@ -83,6 +88,10 @@ tbody td:hover:before {
   bottom: -9999px;
   background-color: rgba(255, 255, 255, 0.2);
   z-index: -1;
+}
+
+tr:hover {
+  background-color: #464c5a;
 }
 
 a {
@@ -129,41 +138,20 @@ a {
   border: 3px solid black;
 }
 
-.book-container {
-  border: 2px solid black;
-  display: grid;
-  grid-template-areas:
-  "one three four";
-  border-radius: 15px;
-  background-color: rgb(230, 227, 227);
-  margin: .5rem;
+.book-section-1 {
+  width: 55vw;
 }
 
-.book-grid1 {
-  grid-area: one;
-  width: 30vw;
+.book-section-2 {
+  width: 10vw;
 }
 
-.book-grid2 {
-  grid-area: two;
-  max-width: 20vw;
-}
-
-.book-grid3 {
-  grid-area: three;
-}
-
-.book-grid4 {
-  grid-area: four;
-}
-
-.book-grid5 {
-  grid-area: five;  
+.book-section-3 {
+  width: 15vw;
 }
 
 .book-author {
   font-size: 1.3rem;
-  
 }
 
 .book-title {
@@ -171,14 +159,8 @@ a {
   font-weight: bold;
 }
 
-.book-container p {
-  margin-bottom: -3px;
-}
-
-.book-container small {
-  border-top: .5px solid black;
-  color: darkgrey;
-  font-size: .75rem;
+.book-item {
+  padding-block: .25em;
 }
 
 #lookup {
