@@ -45,6 +45,25 @@
   margin-bottom: 20px;
 }
 
+.home {
+  margin-inline: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.sortBtn {
+  background-color: aqua;
+  margin: 5px;
+}
+
 /* Book results */
 
 table {
@@ -53,6 +72,7 @@ table {
   border-collapse: collapse;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(247, 246, 246, 0.9);  
+  margin-inline: auto;
 }
 
 th,
@@ -62,6 +82,10 @@ td {
   color: rgb(204, 202, 202);
 }
 
+ tr:hover td {
+  background-color: rgba(204, 202, 202);
+  color:#282c34
+}
 
 th {
   text-align: left;
@@ -90,8 +114,10 @@ tbody td:hover:before {
   z-index: -1;
 }
 
+
+
 tr:hover {
-  background-color: #464c5a;
+  background-color: #c6c8cc;
 }
 
 a {

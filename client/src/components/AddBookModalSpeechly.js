@@ -78,48 +78,54 @@ export default function AddBookModalSpeechly() {
   function SpeechlyApp() {
     const { segment } = useSpeechContext();
     let newSegment = []
-    let titleIndex = 0
-    let authorIndex = 0
-    let categoriesIndex = 0
-    let locationIndex = 0
-
-    let segmentTitle = []
-    let segmentAuthors = []
-    let segmentCategories = []
-    let segmentLocation = []
+   
     // This effect is fired whenever there's a new speech segment available
     useEffect(() => {
+    var titleIndex = 0
+    var authorIndex = 0
+    var categoriesIndex = 0
+    var locationIndex = 0
+
+    var segmentTitle = []
+    var segmentAuthors = []
+    var segmentCategories = []
+    var segmentLocation = []
       
         if (segment?.isFinal) {
           //translate the speech strings to text numbers
          
           segment.words.forEach(word => {
-            if (word.confidence > 0.5) {
-              newSegment.push(word.value)
-            } else {
-              alert('Please speak clearly')
+            newSegment.push(word.value)
+            if (word.value === 'ADD') {
+              titleIndex = newSegment.indexOf('ADD')+1
             }
+            if (word.value === 'AUTHOR') {
+              authorIndex = newSegment.indexOf('AUTHOR')+1
+            }
+            if (word.value === 'LOCATION') {
+              locationIndex = newSegment.indexOf('LOCATION')+1
+            }
+            if (word.value === 'CATEGORIES') {
+              categoriesIndex = newSegment.indexOf('CATEGORIES')+1
+            }
+            
           })
+          console.log(newSegment)
+          console.log(titleIndex, authorIndex, locationIndex, categoriesIndex)
+          
 
-          setTranscript(newSegment)
 
-           for(let i = 0; i < segment.words.length; i++) {
-                if (segment.words[i].value === 'add') {
-                  titleIndex = i
-                }
-                if (segment.words[i].value === 'by') {
-                  authorIndex = i
-                }
-                if (segment.words[i].value === 'location') {
-                  locationIndex = i
-                }
-                if (segment.words[i].value === 'categories') {
-                  categoriesIndex = i
-                }
-                
-           }
-          //if (word[i] = "add") {
-            //setTitle(word[+1])
+
+
+
+          //Add logic to set state by segment peices
+
+
+
+          
+          
+
+          
         //title, author, location, categories
           
         }
@@ -151,7 +157,10 @@ export default function AddBookModalSpeechly() {
                   <IntroPopup />
                   <SpeechlyApp />
                 </SpeechProvider>
-                <p>{transcript}</p>
+                
+            </div>
+            <div>
+              <p>{transcript}</p>
             </div>
           </Modal.Title>
         </Modal.Header>

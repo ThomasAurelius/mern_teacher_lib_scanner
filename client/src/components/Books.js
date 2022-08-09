@@ -22,17 +22,15 @@ export default function Books() {
 
   return (
     <>
-      <div>
-         <Button onClick={sortByAuthor}>Sort by Author</Button>
-      </div>
+      
       { !loading && !error && (
-         <div className='table table-hover mt-3'>
-            <div>
+         <table className='table table-hover mt-3'>
+            <tbody>
                {data.books.map(book => (
                   <BookRow3 key={book.id} book={book} />
                ))}
-            </div>
-         </div>
+            </tbody>
+         </table>
       ) }
     </>
   );
