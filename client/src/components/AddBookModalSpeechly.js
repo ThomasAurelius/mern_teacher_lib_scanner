@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { BiMicrophone } from 'react-icons/bi'
 import { useMutation } from '@apollo/client'
 import { Button, Modal } from 'react-bootstrap'
-import BeepAudio from '../beep.mp3'
 
 
 import {
