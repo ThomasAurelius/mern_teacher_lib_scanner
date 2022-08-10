@@ -179,7 +179,19 @@ export default function AddBookModalSpeechly() {
                   <label className="form-label">Author</label>
                   <input type="text" className='form-control' id="authors" value={authors} onChange={ (e) => setAuthors(e.target.value) } />
                 </div>
-                
+                <div className="mb-3">
+                  <label className="form-label">Location</label>
+                  <input type="text" className='form-control' id="location" value={location} onChange={ (e) => setLocation(e.target.value) } />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Categories</label>
+                  <input type="text" className='form-control' id="categories" value={categories} onChange={ (e) => setCategories(e.target.value) } />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Subject</label>
+                  <input type="text" className='form-control' id="subject" value={subject} onChange={ (e) => setSubject(e.target.value) } />
+                </div>
+                                
                 <div className="mb-3">
                   <label className="form-label">ISBN</label>                
                   <input type="text" className='form-control' id="isbn" value={isbn} onChange={ (e) => setIsbn(e.target.value) } />                  
@@ -194,21 +206,11 @@ export default function AddBookModalSpeechly() {
                   <input type="text" className='form-control' id="price" value={price} onChange={ (e) => setPrice(e.target.value) } />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Img</label>
+                  <label className="form-label">ImgUrl</label>
                   <input type="text" className='form-control' id="img" value={img} onChange={ (e) => setImg(e.target.value) } />
                 </div>
-                <div className="mb-3">
-                  <label className="form-label">Subject</label>
-                  <input type="text" className='form-control' id="subject" value={subject} onChange={ (e) => setSubject(e.target.value) } />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Categories</label>
-                  <input type="text" className='form-control' id="categories" value={categories} onChange={ (e) => setCategories(e.target.value) } />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Location</label>
-                  <input type="text" className='form-control' id="location" value={location} onChange={ (e) => setLocation(e.target.value) } />
-                </div>
+                
+                
                 <div className="mb-3">
                   <label className="form-label">Borrowed By:</label>
                   <input type="text" className='form-control' id="borrowedBy" value={borrowedBy} onChange={ (e) => setBorrowedBy(e.target.value) } />
